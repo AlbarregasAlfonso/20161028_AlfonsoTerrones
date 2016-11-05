@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Acceso", urlPatterns = {"/acceso"})
 public class AccesoBD extends HttpServlet {
     DataSource datasource = null;
-        
+
 @Override
     public void init(ServletConfig config)throws ServletException{
         try{
@@ -42,13 +42,13 @@ public class AccesoBD extends HttpServlet {
             ex.printStackTrace();
         }
     }
-    
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         System.out.println("Bases da datos!!");
         out.println("estamos en el acceso a la base de datos");
-        
+
         Connection conexion = null;
         Statement sentencia = null;
         PreparedStatement preparada = null;
@@ -57,27 +57,27 @@ public class AccesoBD extends HttpServlet {
         List<Ave> listado = null;
          try {
         conexion = datasource.getConnection();
-     
 
-       
-       
+
+
+
         } catch (SQLException ex) {
             System.out.println("Error al cargar el Driver");
             ex.printStackTrace();
         }
-        
+
         //String anilla = request.getParameter("anilla");
         String sql = null;
         String url = null;
        try {
- 
-           
+
+
             HttpSession session = null;
             session = request.getSession(true);
                 if (!request.getParameter("menu").equals("Crear")) {
                     out.println("estamos aqui");
                     sql = "select * from aves";
-                } 
+                }
                 if (url == null) {
                     sentencia = conexion.createStatement();
                     resultado = sentencia.executeQuery(sql);
@@ -93,10 +93,10 @@ public class AccesoBD extends HttpServlet {
                         ave.setFecha(resultado.getString("fecha"));
                         listado.add(ave);
                     }
-                    
+// POR QUÉ LLEVAS EL LISTADO A LA PETICIÓN Y A LA SESIÓN
                     request.setAttribute("lista", listado);
                     session.setAttribute("listadoaves", listado);
-                    
+
                 }
 // si hemos pulsado el boton de editar
 // obtenemos los datos de la sesion con request.getSession().getAtributte("listadoaves")

@@ -40,43 +40,43 @@ public class ControladorMenuIncial extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
          DataSource datasource = null;
-        
+// EL ROL DE UN CONTROLADOR NO ES VISUALIZAR DATOS EN LA PANTALLA
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorMenuIncial</title>");            
+            out.println("<title>Servlet ControladorMenuIncial</title>");
             out.println("</head>");
             out.println("<body>");
-           
+
             out.println("<h1>Servlet ControladorMenuIncial at " + request.getContextPath() + "</h1>");
-            
-            
-            
+
+
+
             String url="acceso";
-           
+
             if(request.getParameter("Crear")!=null){
-                request.getRequestDispatcher("/JSP/CrearAveFormulario.jsp").forward(request, response); 
-            }        
-            if(!request.getParameter("menu").equals("Crear")){
-            request.getRequestDispatcher("acceso").forward(request, response); 
-            }else{
-            request.getRequestDispatcher("/JSP/CrearAveFormulario.jsp").forward(request, response);     
+                request.getRequestDispatcher("/JSP/CrearAveFormulario.jsp").forward(request, response);
             }
-            
+            if(!request.getParameter("menu").equals("Crear")){
+            request.getRequestDispatcher("acceso").forward(request, response);
+            }else{
+            request.getRequestDispatcher("/JSP/CrearAveFormulario.jsp").forward(request, response);
+            }
+
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-   
- 
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             processRequest(request, response);
 
-       
+
     }
 
     /**

@@ -28,6 +28,7 @@ import javax.sql.DataSource;
  *
  * @author AlfonsoTerrones
  */
+ // HAY QUE FORMATEAR EL DOCUMENTO
 @WebServlet(name = "ControladorCrearAve", urlPatterns = {"/ControladorCrearAve"})
 public class ControladorCrearAve extends HttpServlet {
 javax.sql.DataSource datasource = null;
@@ -44,44 +45,45 @@ javax.sql.DataSource datasource = null;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         Connection conexion = null;
             java.sql.Statement sentencia = null;
             java.sql.PreparedStatement preparada = null;
-            
+
             List<String> errores = null;
                 errores = new ArrayList();
-            
+
              if(request.getParameter("especie").equals("")){//En el caso de que el campo especie este vacio se añade al error
-                 errores.add("especie");  
+                 errores.add("especie");
              }
              if(request.getParameter("fecha").equals("")){//En el caso de que el campo fecha este vacio se añade al error
-                 errores.add("fecha");       
+                 errores.add("fecha");
              }
-              if(request.getParameter("lugar").equals("")){//En el caso de que el campo lugar este vacio se añade al error                 
+              if(request.getParameter("lugar").equals("")){//En el caso de que el campo lugar este vacio se añade al error
                  errores.add("lugar");
               }
               request.setAttribute("errores", errores);
 
                if(!errores.isEmpty()){//Si hay errores en el array significa que hay campos vacios por lo que iremos al jsp de campos vacios
-                   
-                   request.getRequestDispatcher("/JSP/errorvacio.jsp").forward(request, response);  
+
+                   request.getRequestDispatcher("/JSP/errorvacio.jsp").forward(request, response);
                }
-              
+
                if(tiene_numeros(request.getParameter("lugar"))){//Si el campo lugar tiene numeros daremos el error de que tiene numeros
-                  request.getRequestDispatcher("/JSP/errorNumeros.jsp").forward(request, response);  
+                  request.getRequestDispatcher("/JSP/errorNumeros.jsp").forward(request, response);
                   System.out.println("Estamos asquiiiii"+request.getParameter("lugar"));
                }
                if(tiene_numeros(request.getParameter("especie"))){//Si el campo especie tiene numeros daremos el error de que tiene numeros
-                   request.getRequestDispatcher("/JSP/errorNumeros.jsp").forward(request, response);  
+                   request.getRequestDispatcher("/JSP/errorNumeros.jsp").forward(request, response);
                }
-              
-            
+
+
 //Si no hay errores pues añadiria el ave en la base de datos
         try (PrintWriter out = response.getWriter()) {
-          
-            
+
+
             String sql = null;
+// AQUÍ VENDRIA MUCHO MEJOR UNA SENTENCIA PREPARADA
             sql = "insert into aves values ('"+request.getParameter("anilla")+"', '"+request.getParameter("especie")+"', '"+request.getParameter("fecha")+"', '"+request.getParameter("lugar")+"');";
 
             try {
@@ -90,14 +92,14 @@ javax.sql.DataSource datasource = null;
                 System.out.println("Error al cargar el driver");
                 ex.printStackTrace();
             }
-            
+
             try{
-   
+
             sentencia = conexion.createStatement();
             sentencia.executeUpdate(sql);
             sentencia.close();
 
-            
+
             } catch (SQLException exc) {
                 System.out.println("Error al crear la conexión");
                 exc.printStackTrace();
@@ -117,13 +119,13 @@ javax.sql.DataSource datasource = null;
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-           
-       }    
+
+       }
             request.setAttribute("mensaje", "Se se ha creado el ave.. "+request.getParameter("especie"));
-            
+
             request.getRequestDispatcher("JSP/index.jsp").forward(request, response);
 
-            
+
         }
     }
     @Override
@@ -137,19 +139,19 @@ javax.sql.DataSource datasource = null;
             ex.printStackTrace();
         }
     }
-   
-    
-    
+
+
+
    public boolean tiene_numeros(String texto){
    String numeros="0123456789";
-   
+
    for(int i=0; i<texto.length(); i++){
       if (numeros.indexOf(texto.charAt(i),0)!=-1){
          return true;
       }
    }
    return false;
-}      
+}
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

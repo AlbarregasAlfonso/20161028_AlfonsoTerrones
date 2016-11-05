@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 @WebServlet(name = "UpdateDelete", urlPatterns = {"/UpdateDelete"})
 public class UpdateDelete extends HttpServlet {
 javax.sql.DataSource datasource = null;
-    
+
 
 @Override
     public void init(ServletConfig config)throws ServletException{
@@ -54,40 +54,41 @@ javax.sql.DataSource datasource = null;
              Connection conexion = null;
             java.sql.Statement sentencia = null;
             java.sql.PreparedStatement preparada = null;
-            
+
         if(request.getParameter("borrar") != null){
-            
+
              String [] avesaborrar = request.getParameterValues("avesABorrar");//recogemos las aves que queremos borrar
+// SERIA CONVENIENTE CONSTRUIR LA CLAUSULA WHERE
             for(String s:avesaborrar){//Hacemos un bucle oara borrar cada uno de los datos seleccionados
                 String sql = null;
                 sql = "delete from aves where anilla='"+s+"';";
-                    
+
             try {
                 conexion = datasource.getConnection();
             } catch(SQLException ex){
                 System.out.println("Error al cargar el driver");
                 ex.printStackTrace();
             }
-            
+
             try{
-   
+
                 sentencia = conexion.createStatement();
                 sentencia.executeUpdate(sql);
                 sentencia.close();
 
             } catch (SQLException ex) {
-    
-            
+
+
                 ex.printStackTrace();
             }
-             
+
             }
-  
+
             request.setAttribute("mensaje", "Se ha borrado algunos datos de su base de datos");
             request.getRequestDispatcher("JSP/index.jsp").forward(request, response);
 
         }else{//En este caso habremos pulsado editar
-          
+// SERIA CONVENIENTE UNA SENTENCIA PREPARADA
             String sql = null;
             sql = "update aves set especie='"+request.getParameter("especie")+"' , lugar='"+request.getParameter("lugar")+"' , fecha='"+request.getParameter("fecha")+"' where anilla='"+request.getParameter("anilla")+"';";
 
@@ -97,15 +98,15 @@ javax.sql.DataSource datasource = null;
                 System.out.println("Error al cargar el driver");
                 ex.printStackTrace();
             }
-            
+
             try{
-   
+
             sentencia = conexion.createStatement();
             sentencia.executeUpdate(sql);
             sentencia.close();
 
             } catch (SQLException ex) {
-    
+
                 System.out.println("Error al crear la conexión");
                 ex.printStackTrace();
             } finally {
@@ -123,26 +124,26 @@ javax.sql.DataSource datasource = null;
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-           
-       }     
+
+       }
             request.setAttribute("mensaje", "Se ha modificado la especie "+request.getParameter("especie"));
             request.getRequestDispatcher("JSP/index.jsp").forward(request, response);
     }//else
-       
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             processRequest(request, response);
 
-       
+
     }
-    
+
       protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             processRequest(request, response);
 
-       
+
     }
 
 }
